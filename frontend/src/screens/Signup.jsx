@@ -1,32 +1,38 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios'; // Import Axios
 
 export default function Signup() {
-  const [credentials, setcredentials] = useState({ name: "", email: "", password: "", geolocation: "" })
+  const [credentials, setCredentials] = useState({ name: "", email: "", password: "", geolocation: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/creatuser", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password, location: credentials.geolocation })
-    });
-    const json = await response.json()
-    console.log(json);
+    try {
+      const response = await axios.post("http://localhost:5000/api/createuser", {
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+        location: credentials.geolocation
+      });
 
-    if (json.success) {
-      alert("Enter valid Credentials")
+      console.log(response.data);
+
+      if (response.data.success) {
+        alert("User created successfully");
+      } else {
+        alert("Failed to create user");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
+  };
 
-  }
   const onChange = (event) => {
-    setcredentials({ ...credentials, [event.target.name]: event.target.value })
-  }
+    setCredentials({ ...credentials, [event.target.name]: event.target.value });
+  };
+
   return (
     <>
-
       <div className='container'>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -50,9 +56,7 @@ export default function Signup() {
           <button type="submit" className="btn btn-success">Submit</button>
           <Link to="/login" className='m-3 btn btn-danger'>Already a User</Link>
         </form>
-
       </div>
-
     </>
-  )
+  );
 }
