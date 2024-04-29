@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,14 +19,15 @@ export default function Login() {
       console.log(json);
 
       if (!json.success) {
-        alert("Enter valid Credentials");
+        setError("Invalid email or password. Please try again.");
       } else {
         localStorage.setItem("authToken", json.authToken);
         console.log(localStorage.getItem("authToken"));
-        navigate("/");
+        navigate("/"); // Redirect to the home page
       }
     } catch (error) {
       console.error("Error:", error);
+      setError("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -37,6 +39,7 @@ export default function Login() {
     <>
       <div className='container'>
         <form onSubmit={handleSubmit}>
+          {error && <div style={{ color: 'red' }}>{error}</div>}
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
             <input type="email" className="form-control" name='email' value={credentials.email} onChange={onChange} id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -47,7 +50,7 @@ export default function Login() {
             <input type="password" className="form-control" name='password' value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
           </div>
           <button type="submit" className="btn btn-success">Submit</button>
-          <Link to="/creatuser" className='m-3 btn btn-danger'>I'm a new User</Link>
+          <Link to="/createuser" className='m-3 btn btn-danger'>I'm a new User</Link>
         </form>
       </div>
     </>

@@ -66,23 +66,22 @@ export default function Home() {
  </div>
             <div className='container'>
                 {
-                    foodCat !== []
+                    foodCat.length !== 0
                         ? foodCat.map((data) => {
                             return (
-                                <div className='row mb-3'>
-                                    <div key={data._id} className="fs-3 m-3">
+                                <div key={data._id}className='row mb-3'>
+                                    <div  className="fs-3 m-3">
                                         {data.CategoryName}
                                     </div>
                                     <hr />
-                                    {foodItem !==[]
-                                        ?
-                                        foodItem.filter((item) => (item.CategoryName === data.CategoryName)&& (item.name.toLowerCase().includes(search.toLowerCase()))) 
+                                    {foodItem.length !== 0 ?
+   foodItem.filter((item) => item.CategoryName === data.CategoryName && item.name.toLowerCase().includes(search.toLowerCase()))
                                             .map(filterItems => {
                                                 return (
                                                     <div key={filterItems._id} className='col-12 col-md-6 col-lg-3'>
-                                                        <Card foodName = {filterItems.name}
+                                                        <Card foodItem= {filterItems}
                                                         options={filterItems.options[0]}
-                                                        imgSrc ={filterItems.img}
+                                                        
                                                         ></Card>
                                                     </div>
                                                 )

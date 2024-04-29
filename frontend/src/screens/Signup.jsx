@@ -8,12 +8,16 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/createuser", {
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-        location: credentials.geolocation
-      });
+      // Sending the request to the server
+const response = await axios.post("http://localhost:5000/api/creatuser", {
+  name: credentials.name,
+  email: credentials.email,
+  password: credentials.password,
+  location: credentials.geolocation // Check if 'location' should be 'geolocation'
+});
+
+// Handling the response
+
 
       console.log(response.data);
 
